@@ -52,8 +52,23 @@ return res.status(201).send({
       });
 }
   }
-  exports.updateBlogController=(req,res)=>{
-
+  exports.updateBlogController=async(req,res)=>{
+    try{
+        const{id}=req.params;
+const {title,description,image}=req.body
+const blog=await blogModel.findByIdAndUpdate(id,{...req.body},{new:true})
+return res.status(200).send({
+    success:true,
+    message:'blog update succesfully',
+    blog,
+})
+    }catch(error){
+        return res.status(400).send({
+            success: false,
+            message: "Error While updating Blogs",
+            error,
+          });
+    }
   }
 
   exports.getBlogByIdController=(req,res)=>{

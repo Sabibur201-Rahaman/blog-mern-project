@@ -19,7 +19,7 @@ router.get("/allBlog", getAllBlogsController);
 router.post("/createBlog", createBlogController);
 
 //PUT || update blog
-router.put("/update-blog/:id", updateBlogController);
+router.put("/updateBlog/:id", updateBlogController);
 
 //GET || SIngle Blog Details
 router.get("/get-blog/:id", getBlogByIdController);
