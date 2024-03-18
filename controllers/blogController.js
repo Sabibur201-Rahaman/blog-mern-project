@@ -112,13 +112,16 @@ return res.status(200).send({
   }
   exports.deleteBlogController=async(req,res)=>{
 try{
-await blogModel.findOneAndDelete(req.params.id)
+const blog=await blogModel.findOneAndDelete(req.params.id).populate('user')
+await blog.user.blogs.pull(blog);
+await blog.user.save()
 return res.status(200).send({
   message:"blog deleted!",
   success:true,
 
 })
 }catch(error){
+  console.log(error)
 return res.status(400).send({
   message:"something went wrong while delete",
   success:false,
