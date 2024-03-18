@@ -22,10 +22,10 @@ router.post("/createBlog", createBlogController);
 router.put("/updateBlog/:id", updateBlogController);
 
 //GET || SIngle Blog Details
-router.get("/get-blog/:id", getBlogByIdController);
+router.get("/getBlog/:id", getBlogByIdController);
 
 //DELETE || delete blog
-router.delete("/delete-blog/:id", deleteBlogController);
+router.delete("/deleteBlog/:id", deleteBlogController);
 
 //GET || user blog
 router.get("/user-blog/:id", userBlogControlller);
