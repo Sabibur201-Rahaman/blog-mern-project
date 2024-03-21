@@ -129,6 +129,26 @@ return res.status(400).send({
 })
 }
   }
-exports.userBlogControlller=(req,res)=>{
-
+exports.userBlogControlller=async(req,res)=>{
+try{
+const userBlog=await userModel.findById(req.params.id).populate('blogs')
+if(!userBlog){
+  return res.status(404).send({
+    success:false,
+    message:'blog doesnot available along this id',
+  })
+}
+return res.status(200).send({
+    message:'user Blogs are here',
+    success:true,
+    userBlog,
+})
+}catch(error){
+  console.log(error)
+  return res.status(400).send({
+    message:"something went wrong while delete",
+    success:false,
+    error
+})
+}
 }

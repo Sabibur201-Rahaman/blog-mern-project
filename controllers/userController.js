@@ -1,6 +1,7 @@
 
 const userModel = require("../models/userModel");
 const bcrypt=require('bcrypt')
+const jwt = require("jsonwebtoken")
 exports.registerController = async (req, res) => {
   try {
     const { userName, email, password } = req.body;
@@ -34,7 +35,7 @@ const hashedPassword=await bcrypt.hash(password,10)
       user: newUser,
     });
   } catch (error) {
-    console.error("Error in registerController:", error);
+    console.log("Error in registerController:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error.",
@@ -80,27 +81,34 @@ exports.loginController = async (req, res) => {
     if (!user) {
       return res.status(200).send({
         success: false,
-        message: "email is not registerd",
+        message: "Email is not registered",
       });
     }
-    //password
+    
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).send({
         success: false,
-        message: "Invlid username or password",
+        message: "Invalid username or password",
       });
     }
-    return res.status(200).send({
-      success: true,
-      messgae: "login successfully",
-      user,
-    });
+
+    // If email and password are correct, generate JWT token
+    let payload = {
+      exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+      user: user.email,
+    };
+    let token = jwt.sign(payload, "SecretKey123456789");
+
+    // Send success response
+    res.status(200).json({ success: true, message: "Login successful", token: token, user: user });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: "Error In Login Callcback",
+      message: "Error in login callback",
       error,
     });
   }
