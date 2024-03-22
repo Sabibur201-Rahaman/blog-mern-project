@@ -11,6 +11,7 @@ dotenv.config();
 //import router
 const userRoutes = require("./routes/userRoutes");
 const blogRoutes=require("./routes/blogRoutes")
+const commentRoutes=require("./routes/commentRoutes")
 //connection mongodb
 connectDB();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 //routes
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/blog", blogRoutes);
+app.use("/api/v1/comment", commentRoutes);
 
 
 //port
